@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>Arubis</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; height: 100vh; display: grid; place-items: center; font: 15px/1.5 -apple-system, "Segoe UI", system-ui, sans-serif; background: #fff; color: #111; }
+  @media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } p { color: #aaa !important; } }
+  main { max-width: 380px; text-align: center; padding: 24px; }
+  h1 { font-size: 22px; font-weight: 400; margin: 0 0 8px; }
+  p { color: #555; margin: 0 0 20px; }
+  button { font: inherit; border: 0; border-radius: 999px; padding: 10px 22px; background: #3B4BF2; color: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Arubis is offline</h1>
+  <p>Arubis needs an internet connection. Check your connection, then try again.</p>
+  <button id="retry">Try again</button>
+</main>
+<script>
+  const to = new URLSearchParams(location.search).get('to') || 'https://arubis.olympuspay.co/home'
+  const go = () => { location.href = to.startsWith('https://arubis.olympuspay.co') ? to : 'https://arubis.olympuspay.co/home' }
+  document.getElementById('retry').onclick = go
+  window.addEventListener('online', go)
+</script>
+</body>
+</html>

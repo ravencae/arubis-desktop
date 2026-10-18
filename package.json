@@ -1,0 +1,54 @@
+{
+  "name": "arubis-desktop",
+  "productName": "Arubis",
+  "version": "1.0.0",
+  "description": "Arubis accounting software for Mac and Windows",
+  "author": { "name": "Olympus Pay Proprietary Limited", "email": "hello@olympuspay.co" },
+  "homepage": "https://arubis.olympuspay.co",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist:mac": "electron-builder --mac --publish never",
+    "dist:win": "electron-builder --win --publish never",
+    "release": "electron-builder --publish always"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "co.olympuspay.arubis",
+    "productName": "Arubis",
+    "copyright": "Copyright © Olympus Pay Proprietary Limited",
+    "files": ["src/**/*", "package.json"],
+    "directories": { "buildResources": "build", "output": "dist" },
+    "publish": [{ "provider": "github", "owner": "ravencae", "repo": "arubis-desktop", "releaseType": "release" }],
+    "mac": {
+      "category": "public.app-category.finance",
+      "icon": "build/icon.png",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "target": [{ "target": "dmg", "arch": ["arm64", "x64"] }, { "target": "zip", "arch": ["arm64", "x64"] }],
+      "artifactName": "Arubis-mac-${arch}.${ext}"
+    },
+    "dmg": { "title": "Arubis", "artifactName": "Arubis-mac-${arch}.${ext}" },
+    "win": {
+      "icon": "build/icon.png",
+      "target": [{ "target": "nsis", "arch": ["x64", "arm64"] }],
+      "artifactName": "Arubis-windows-setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Arubis",
+      "artifactName": "Arubis-windows-setup.${ext}"
+    }
+  }
+}
