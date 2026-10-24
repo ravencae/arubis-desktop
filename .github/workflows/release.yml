@@ -27,13 +27,19 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Build and publish (Mac)
+      - name: Build (Mac)
         if: runner.os == 'macOS'
-        run: npx electron-builder --mac --publish always
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and publish (Windows)
+        run: npx electron-builder --mac --publish never
+      - name: Build (Windows)
         if: runner.os == 'Windows'
-        run: npx electron-builder --win --publish always
+        run: npx electron-builder --win --publish never
+      # Attach the installers to the release for this version, making the release if it does not exist yet.
+      - name: Attach to the release
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="v$(node -p "require('./package.json').version")"
+          gh release view "$VERSION" >/dev/null 2>&1 || gh release create "$VERSION" --title "Arubis ${VERSION#v}" --notes "Arubis for Mac and Windows."
+          FILES=$(ls dist/*.dmg dist/*.zip dist/*.exe dist/*.blockmap dist/latest*.yml 2>/dev/null || true)
+          gh release upload "$VERSION" $FILES --clobber
